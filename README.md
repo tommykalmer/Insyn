@@ -24,7 +24,7 @@ Demon är öppen för alla som har länken, även om repot är privat. Den visar
 
 ## Testdata
 
-`app/databas.xlsx` innehåller påhittade siffror för ett skadeförsäkringsbolag med två bolag (ALANDS, ALLIV). Flikarna har samma format som Visma-exporten (`vourowx`, `account`, `object`, `fiscalyear`). Perioden är 2025 helår och januari–oktober 2026.
+`app/databas.xlsx` innehåller påhittade siffror för ett skadeförsäkringsbolag med två bolag (SAK, ALLIV). Flikarna har samma format som Visma-exporten (`vourowx`, `account`, `object`, `fiscalyear`). Perioden är 2025 helår och januari–oktober 2026.
 
 | Kontoserie | Innehåll |
 |---|---|

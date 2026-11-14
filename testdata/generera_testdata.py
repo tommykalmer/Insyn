@@ -17,9 +17,9 @@ from pathlib import Path
 
 random.seed(42)
 DB = Path(__file__).with_name("testdata.sqlite")
-CID = "ALANDS"
+CID = "SAK"
 SCALE = 1.0
-COMPANIES = [("ALANDS", "Testbolaget Skade Ab", 1.0), ("ALLIV", "Testbolaget Liv Ab", 0.35)]  # påhittade bolag
+COMPANIES = [("SAK", "Sak Ab", 1.0), ("ALLIV", "Testbolaget Liv Ab", 0.35)]  # påhittade bolag
 YEARS = {2025: 16, 2026: 17}          # kalenderår -> Visma 'year'-index (2026 = 17 enligt exemplet)
 LAST_PERIOD = {2025: 12, 2026: 10}    # 2026 bokfört t.o.m. oktober
 SEK_RATE = 11.05                      # SEK per EUR, ungefär som i exemplet

@@ -70,12 +70,12 @@ def vr(cid, year, per, serie, vouno, rowno, d, acc, cur, amt, famt, dims, text, 
     return [cid, year, per, serie, vouno, rowno, d, 0, acc, "", cur, amt, famt, 0, *o, text, 0, 0, "", "", "", 0, 4, creator, "", 0]
 d1 = dt.datetime(2026, 1, 1); d2 = dt.datetime(2026, 1, 15)
 rows = [
-    vr("ALANDS", 17, 0, "IB", 1, 0, d1, "1910", "EUR", 1250000.00, 1250000.00, [], "Ingående balans", ""),
-    vr("ALANDS", 17, 0, "IB", 1, 1, d1, "2091", "EUR", -1250000.00, -1250000.00, [], "Ingående balans", ""),
-    vr("ALANDS", 17, 1, "PREM", 12, 0, d2, "3010", "EUR", -430000.00, -430000.00, ["10","1","400","","","","FSG"], "Premieinkomst januari", ""),
-    vr("ALANDS", 17, 1, "PREM", 12, 1, d2, "1510", "EUR", 430000.00, 430000.00, [], "Premieinkomst januari", ""),
-    vr("ALANDS", 17, 1, "IMANAL", 1, 0, d1, "2780", "SEK", -2261.42, -25000.00, [], "Exempel fritext 1", "5569387169"),
-    vr("ALANDS", 17, 1, "IMANAL", 1, 1, d1, "1699", "SEK", 2261.42, 25000.00, [], "Exempel fritext 2", "5569387169"),
+    vr("SAK", 17, 0, "IB", 1, 0, d1, "1910", "EUR", 1250000.00, 1250000.00, [], "Ingående balans", ""),
+    vr("SAK", 17, 0, "IB", 1, 1, d1, "2091", "EUR", -1250000.00, -1250000.00, [], "Ingående balans", ""),
+    vr("SAK", 17, 1, "PREM", 12, 0, d2, "3010", "EUR", -430000.00, -430000.00, ["10","1","400","","","","FSG"], "Premieinkomst januari", ""),
+    vr("SAK", 17, 1, "PREM", 12, 1, d2, "1510", "EUR", 430000.00, 430000.00, [], "Premieinkomst januari", ""),
+    vr("SAK", 17, 1, "IMANAL", 1, 0, d1, "2780", "SEK", -2261.42, -25000.00, [], "Exempel fritext 1", "5569387169"),
+    vr("SAK", 17, 1, "IMANAL", 1, 1, d1, "1699", "SEK", 2261.42, 25000.00, [], "Exempel fritext 2", "5569387169"),
     vr("ALLIV", 17, 1, "LEV", 3, 0, d2, "6540", "EUR", 4800.00, 4800.00, ["","","300","","","","STAB"], "IT-licenser", "5590065024"),
     vr("ALLIV", 17, 1, "LEV", 3, 1, d2, "2440", "EUR", -4800.00, -4800.00, [], "IT-licenser", "5590065024"),
 ]
@@ -94,7 +94,7 @@ ws["E1"] = "type är valfri: T = tillgång, S = skuld/eget kapital, I = intäkt,
 ws = wb.create_sheet("object")
 sheet(ws, ["dim","code","name"], [
     ["o1","10","Motorfordon"],["o2","1","Direkt försäkring"],["o3","400","Försäljning privat"],["o3","300","IT"],["o7","FSG","Försäljning"],["o7","STAB","Stab"],
-    ["cid","ALANDS","Testbolaget Skade Ab"],["cid","ALLIV","Testbolaget Liv Ab"]], [8,12,36], textcols=(1,2))
+    ["cid","SAK","Sak Ab"],["cid","ALLIV","Testbolaget Liv Ab"]], [8,12,36], textcols=(1,2))
 ws["E1"] = "dim = o1 Klass, o2 Slag, o3 Kst, o4 Placering, o5 Moment, o6 Undergrp, o7 Avdelning, o8, cid = bolag"; ws["E1"].font = Font(name=F, size=9, italic=True)
 
 # ---------- fiscalyear

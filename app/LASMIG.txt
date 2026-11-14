@@ -17,7 +17,7 @@ Första inloggning (testkonton): admin / admin123, ekonomi / ekonomi123,
 skador / skador123, salj / salj123, drift / drift123. Byt lösenord eller skapa
 egna användare under Inställningar -> Användare och behörighet.
 
-Testdata (databas.xlsx, påhittad försäkringsdata, två bolag ALANDS och ALLIV):
+Testdata (databas.xlsx, påhittad försäkringsdata, två bolag SAK och ALLIV):
   3xxx premier, 5xxx skador, 6xxx driftskostnader, 7xxx placeringsverksamheten.
   2025 helår och jan–okt 2026. Sex rader har altered = 2 och belopp 999 999 på
   konto 3010 i mars – syns de i rapporterna fungerar inte filtret.

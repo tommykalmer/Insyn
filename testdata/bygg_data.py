@@ -49,6 +49,6 @@ versions = [
   {"id":"b2026","name":"Budget 2026","type":"budget","year":2026,"locked":True,"source":"Inbyggd testdata","rows":bud26},
   {"id":"p2026-1","name":"Prognos 1 2026 (juni)","type":"prognos","year":2026,"locked":False,"source":"Inbyggd testdata","rows":prg},
 ]
-data = {"company":"ALANDS","currency":"EUR","fiscalyears":fy,"rows":rows,"accounts":accounts,"objects":objects,"versions":versions}
+data = {"company":"SAK","currency":"EUR","fiscalyears":fy,"rows":rows,"accounts":accounts,"objects":objects,"versions":versions}
 s = json.dumps(data, ensure_ascii=False, separators=(",",":"))
 open(sys.argv[1] if len(sys.argv) > 1 else HERE / "data.json","w").write(s); print(len(s)//1024, "KB", len(rows), "rader", len(bud26), "budgetrader")

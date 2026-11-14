@@ -18,7 +18,7 @@ info = pd.DataFrame({"Läs mig": [
     "vourowx: verifikationsrader med samma kolumner som Visma Control 14. 2025 (year=16) och jan–okt 2026 (year=17).",
     "amount = belopp i EUR (bolagets valuta), foramount = belopp i transaktionsvaluta (SEK-kurs ca 11,05).",
     "Positivt belopp = debet, negativt = kredit. Varje verifikation (year+serie+vouno) summerar till 0.",
-    "Två påhittade bolag (cid ALANDS och ALLIV). Dimensioner: o1 Klass, o2 Slag, o3 Kst, o4 Placering, o5 Moment, o6 Undergrp, o7 Avdelning, o8 oanvänd. Koderna är påhittade – namn finns i fliken object.",
+    "Två påhittade bolag (cid SAK och ALLIV). Dimensioner: o1 Klass, o2 Slag, o3 Kst, o4 Placering, o5 Moment, o6 Undergrp, o7 Avdelning, o8 oanvänd. Koderna är påhittade – namn finns i fliken object.",
     "Kontoplan: 3xxx premier, 5xxx skador, 6xxx driftskostnader, 7xxx placeringsverksamheten, 1xxx–2xxx balans.",
     "Sex rader har altered = 2 (makulerade, belopp 999 999 på konto 3010 i mars). De ska INTE synas i rapporterna – gör de det fungerar inte filtret.",
     "account: påhittad kontoplan. type: T=tillgång, S=skuld/eget kapital, I=intäkt, K=kostnad, F=finansiell.",

@@ -95,5 +95,5 @@ bad[1][1] = "3999"                        # konto finns inte
 bad[2][4] = "999"                         # Kst finns inte
 bad[3][8] = "tusen"                       # inte ett tal
 bad.append(bad[0][:])                     # dubblett
-bad.append(["ALANDS", "", "Rad utan konto", "", "400", "FSG", *[1000] * 12])
+bad.append(["SAK", "", "Rad utan konto", "", "400", "FSG", *[1000] * 12])
 write(OUT / "budget_med_fel.xlsx", bad, "Fil med avsiktliga fel – importen ska stoppas med 5 felmeddelanden")
