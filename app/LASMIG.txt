@@ -1,0 +1,55 @@
+Insyn – lokal version
+============================
+
+Mappen ska innehålla:
+  server.py           – det lilla lokala programmet (bara Pythons standardbibliotek)
+  insyn.html          – själva systemet
+  start.bat           – dubbelklicka för att starta
+  databas_visma.xlsx  – din export från Visma Control (flik vourowx) – läggs dit av dig
+  databas.xlsx        – påhittad testdata, används bara om databas_visma.xlsx saknas
+  databas_visma_mall.xlsx – mall som visar hur databas_visma.xlsx ska se ut
+  LASMIG.txt          – den här filen
+
+Starta: dubbelklicka på start.bat. Webbläsaren öppnas på http://127.0.0.1:8765
+Avsluta: stäng det svarta fönstret.
+
+Första inloggning (testkonton): admin / admin123, ekonomi / ekonomi123,
+skador / skador123, salj / salj123, drift / drift123. Byt lösenord eller skapa
+egna användare under Inställningar -> Användare och behörighet.
+
+Testdata (databas.xlsx, påhittad försäkringsdata, två bolag ALANDS och ALLIV):
+  3xxx premier, 5xxx skador, 6xxx driftskostnader, 7xxx placeringsverksamheten.
+  2025 helår och jan–okt 2026. Sex rader har altered = 2 och belopp 999 999 på
+  konto 3010 i mars – syns de i rapporterna fungerar inte filtret.
+
+Testa budget- och prognosimport med filerna i mappen importfiler:
+  budget_2027.xlsx          -> typ Budget, år 2027
+  prognos_2026_oktober.xlsx -> typ Prognos, år 2026
+  budget_med_fel.xlsx       -> ska stoppas med fem felmeddelanden
+
+Riktig data: spara exporten som databas_visma.xlsx i mappen. Uppdaterar du filen
+läses den in automatiskt inom 20 sekunder, eller direkt med knappen "Läs om"
+(Inställningar -> Datakälla). Starta om servern första gången filen läggs dit.
+Flikar:
+  vourowx    – verifikationsrader (cid, year, period, serie, vouno, rowno, date,
+               altered, account, currency, amount, foramount, o1–o8, xfreetext, creator ...)
+               Period 0 = ingående balans, period 13 = bokslut (räknas i december).
+               Rader med altered = 2 läses inte in.
+  account    – kontoplan (account, name, type)           [valfri]
+  object     – dimensionskoder (dim, code, name)         [valfri]
+  fiscalyear – räkenskapsår (year, startdate)            [valfri]
+
+Dimensioner: o1 Klass, o2 Slag, o3 Kst, o4 Placering, o5 Moment, o6 Undergrp,
+o7 Avdelning, o8 oanvänd, samt Bolag (cid). Namnen kan ändras under Inställningar -> Dimensioner.
+Behörighet styrs av Avdelning och, per användare, av bokföringskonton.
+
+Annan fil:  python server.py "C:\Mapp\export.xlsx"
+Annan port: python server.py --port 8800
+
+Inställningar, användare, rapporter och budgetar sparas i installningar.json i
+samma mapp. Ta bort den filen för att börja om från början.
+
+Säkerhet: servern lyssnar bara på den här datorn (127.0.0.1). Inget skickas ut på
+nätet. Excelfilen och installningar.json ligger okrypterade i mappen – lägg mappen
+där bara du har åtkomst. Lägg ALDRIG databas_visma.xlsx eller installningar.json i
+GitHub-repot (.gitignore stoppar dem, men dubbelkolla).

@@ -1,0 +1,24 @@
+# ---- RIKTIG DATA FÅR ALDRIG HAMNA I REPOT ----
+# Alla Excel- och CSV-filer ignoreras, utom de påhittade testfilerna som listas nedan.
+*.xlsx
+*.xls
+*.xlsm
+*.csv
+!app/databas.xlsx
+!app/databas_visma_mall.xlsx
+!importfiler/budget_2027.xlsx
+!importfiler/prognos_2026_oktober.xlsx
+!importfiler/budget_med_fel.xlsx
+
+# Riktiga exporter (databas_visma.xlsx m.fl.) stoppas av *.xlsx ovan.
+# Lokala inställningar (användare, lösenordshashar, budgetar)
+installningar.json
+installningar*.json
+
+# Genererat
+*.sqlite
+testdata/data.json
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
