@@ -1,0 +1,38 @@
+# Publicerar demoversionen (app/insyn.html med påhittad testdata) på GitHub Pages.
+# Aktivera: Settings -> Pages -> Source: GitHub Actions.
+name: Demo på GitHub Pages
+
+on:
+  push:
+    branches: [main]
+    paths: ["app/insyn.html", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Förbered sidan
+        run: |
+          mkdir -p site
+          cp app/insyn.html site/index.html
+          touch site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4

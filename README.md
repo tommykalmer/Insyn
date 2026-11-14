@@ -16,6 +16,12 @@ Andra testkonton är `ekonomi` / `ekonomi123`, `skador` / `skador123` (avdelning
 
 Det går också att öppna `app/insyn.html` direkt i webbläsaren utan server. Då sparas allt i webbläsaren i stället för i `installningar.json`.
 
+## Demo på GitHub Pages
+
+Workflowen `.github/workflows/pages.yml` publicerar `app/insyn.html` som demo varje gång filen ändras. Aktivera det en gång under **Settings → Pages → Source: GitHub Actions**. Adressen blir `https://tommykalmer.github.io/insyn/`.
+
+Demon är öppen för alla som har länken, även om repot är privat. Den visar bara den inbyggda påhittade testdatan, och inläsning av bokföringsfiler är avstängd där. Budget- och prognosimport fungerar och sparas bara i den egna webbläsaren.
+
 ## Testdata
 
 `app/databas.xlsx` innehåller påhittade siffror för ett skadeförsäkringsbolag med två bolag (ALANDS, ALLIV). Flikarna har samma format som Visma-exporten (`vourowx`, `account`, `object`, `fiscalyear`). Perioden är 2025 helår och januari–oktober 2026.

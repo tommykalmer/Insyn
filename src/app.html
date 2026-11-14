@@ -534,6 +534,8 @@ let U = null;      // inloggad användare
 let F = null;      // filter
 let EDIT = null;   // id på rapport som redigeras
 const SERVER = /^https?:$/.test(location.protocol) && ["127.0.0.1","localhost"].includes(location.hostname);
+// DEMO: sidan körs från en webbadress (t.ex. GitHub Pages) – bara inbyggd testdata, ingen inläsning av bokföringsfiler
+const DEMO = /^https?:$/.test(location.protocol) && !SERVER;
 let saveT = null;
 function save(){
   if (SERVER){ clearTimeout(saveT); saveT = setTimeout(()=>{ fetch("/api/state",{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(S)}).catch(()=>toast("Kunde inte spara – körs servern?")); }, 300); return; }
@@ -958,7 +960,7 @@ function loginView(){
   return `<div class="login"><div class="art"><div class="brandmark">${ic("flower",26,2)}<div>Insyn</div></div>
     <div><h2>Utfall, budget och prognos – i samma vy.</h2><p>Gå från helhet till enskild verifikation med ett par klick. Bygg egna vyer för just ditt ansvar.</p></div>${art}</div>
     <div class="form"><form class="box" id="loginf" autocomplete="off">
-    <h1>Logga in</h1><div class="hint" style="margin-bottom:22px">${esc(S.settings.orgName)} · prototyp med testdata</div>
+    <h1>Logga in</h1><div class="hint" style="margin-bottom:22px">${esc(S.settings.orgName)} · prototyp med testdata</div>${DEMO?`<div class="note" style="margin:-8px 0 18px"><b>Demo.</b> Alla siffror är påhittade. Läs aldrig in riktig bokföring här – använd den lokala versionen för det.</div>`:""}
     <div class="fld"><label>Användarnamn</label><input id="lu" type="text" autocomplete="username" autocapitalize="none" autocorrect="off"></div>
     <div class="fld"><label>Lösenord</label><input id="lp" type="password" autocomplete="current-password"></div>
     <div id="lerr" class="neg" style="min-height:20px;font-size:13px;margin-bottom:6px"></div>
@@ -1985,6 +1987,7 @@ const isoDate = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0"
 /* ---- välja fil och läsa om */
 const canPicker = () => { try{ return typeof window.showOpenFilePicker==="function" && window.self===window.top; }catch(e){ return false; } };
 async function pickDataFile(){
+  if (DEMO){ toast("Demoversionen använder bara påhittad testdata. Riktig data läses in i den lokala versionen."); return; }
   if (canPicker()){
     try{
       const [h] = await window.showOpenFilePicker({types:[{description:"Excel",accept:{"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":[".xlsx"],"application/vnd.ms-excel":[".xls"],"text/csv":[".csv"]}}], multiple:false});
@@ -2059,6 +2062,7 @@ async function useTestData(){
 }
 async function restoreDataset(){
   if (SERVER){ await serverLoad(false); setInterval(pollServer, 20000); return; }
+  if (DEMO) return;
   const ds = await IDB.get("dataset");
   if (ds && ds.rows && ds.rows.length){ useDataset(ds, null); }
 }
@@ -2066,6 +2070,7 @@ const fmtTime = iso => iso ? new Date(iso).toLocaleString("sv-SE",{dateStyle:"sh
 VIEWS.data = () => {
   if (!can("import")) return noAccess();
   if (SERVER) return dataViewServer();
+  if (DEMO) return head("Datakälla", "Bokföringsdata som rapporterna bygger på") + `<div class="panel"><b style="font-weight:500">Inbyggd testdata</b><div class="hint">${nf0.format(DATA.rows.length)} påhittade verifikationsrader. Det här är demoversionen – inläsning av bokföringsfiler är avstängd. Budget- och prognosimport fungerar som vanligt.</div></div>`;
   const fileMode = DSRC.kind==="file";
   return head("Datakälla", "Bokföringsdata som rapporterna bygger på")
   + `<div class="panel"><div class="row" style="align-items:center;gap:14px">
