@@ -277,6 +277,8 @@ html.dark .note{background:#3a2e14;color:#f3d9a0}
   .tb{display:none}
   .tb.open{display:flex;position:fixed;inset:auto 0 0 0;z-index:70;background:var(--panel);border-radius:18px 18px 0 0;padding:16px 14px calc(18px + var(--safe-b));box-shadow:var(--sh2);flex-direction:column;margin:0;max-height:88vh;overflow:auto}
   .tb.open .seg{width:100%}
+  .tb.open{flex-wrap:nowrap}
+  .tb.open>*{flex-shrink:0}
   .tb.open .sv{flex:1}
   .tb .tbh{display:flex!important;justify-content:space-between;align-items:center}
   .tb.open .fpm{display:block!important}
@@ -750,6 +752,7 @@ const ICONS = {
   calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/>',
   clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   euro:'<path d="M17 6.5A7 7 0 1 0 17 17.5M5 10h9M5 14h9"/>',
+  building:'<path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16M15 9h4a1 1 0 0 1 1 1v11M3 21h18M8 8h3M8 12h3M8 16h3"/>',
   forecast:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 15h3M13 15h3"/>',
   scenario:'<circle cx="12" cy="12" r="9"/><path d="M9 8h4a2 2 0 0 1 0 4H9V8zM9 12h5a2 2 0 0 1 0 4H9v-4z"/>',
   list:'<path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>',
@@ -1008,6 +1011,16 @@ function filterPanel(){
   if (FPCOLL) return `<aside class="fp" style="padding:8px"><button class="collapse" data-a="fpToggle" title="Visa filter">${ic("dchevR",16)}</button></aside>`;
   return `<aside class="fp"><div class="fph"><button class="collapse" data-a="fpToggle" title="Dölj filter">${ic("dchevL",16)}</button>${ic("filter",17)}<span>Filter</span></div>${filterSections()}</aside>`;
 }
+/* ---- bolagsväljare i verktygsraden (visas när datan har fler än ett bolag) */
+function bolagSeg(seg, sv){
+  if (!dimActive(8)) return "";
+  const codes = codesIn(8); if (codes.length<2) return "";
+  const sel = (F.dim||{})[8]||[]; const one = sel.length===1 && !String(sel[0]).startsWith("g:") ? sel[0] : null;
+  const main = !sel.length ? "Alla bolag" : one ? ((OBJ[8]||{})[one]||one) : selLabel(8);
+  const opts = `<select data-cid="1"><option value="" ${!sel.length?"selected":""}>Alla bolag (koncernen)</option>${codes.map(c=>`<option value="${esc(c)}" ${one===c?"selected":""}>${esc(codeLabel(8,c))}</option>`).join("")}${sel.length>1?`<option selected disabled>${esc(selLabel(8))}</option>`:""}</select>`;
+  return seg("building",[sv(main, dimName(8), opts)]);
+}
+function bolagShort(){ const sel=(F.dim||{})[8]||[]; if (!dimActive(8) || codesIn(8).length<2) return ""; return sel.length ? selLabel(8) : "Alla bolag"; }
 /* ---- verktygsrad (period, visning, scenario, prognos, valuta) */
 function toolbar(){
   const vname = id => (version(id)||{name:"– ingen –"}).name;
@@ -1019,9 +1032,10 @@ function toolbar(){
   const view = `<select data-f="view"><option value="ack" ${F.view==="ack"?"selected":""}>Ackumulerat (YTD)</option><option value="per" ${F.view==="per"?"selected":""}>Enskild månad</option></select>`;
   const vers = t => `<select data-f="${t==="budget"?"bud":"prg"}"><option value="">– ingen –</option>` + allVersions().filter(v=>v.type===t).map(v=>`<option value="${v.id}" ${v.id===(t==="budget"?F.bud:F.prg)?"selected":""}>${esc(v.name)}</option>`).join("") + `</select>`;
   const unit = `<select data-f="unit"><option value="eur" ${F.unit==="eur"?"selected":""}>EUR</option><option value="teur" ${F.unit==="teur"?"selected":""}>tEUR</option></select>`;
-  return `<div class="fsumm seg no-print" data-a="fopen" style="margin-bottom:10px;cursor:pointer"><div class="si">${ic("filter",18)}</div><div class="sv" style="flex:1;background:var(--panel)"><b style="overflow:hidden;text-overflow:ellipsis">${esc(per)} · ${F.view==="ack"?"Ack":"Månad"}${DSRC.kind==="test"?" · testdata":""}</b><small>${esc(vname(F.bud))} · ${esc(ccLabel())}</small></div></div>
+  return `<div class="fsumm seg no-print" data-a="fopen" style="margin-bottom:10px;cursor:pointer"><div class="si">${ic("filter",18)}</div><div class="sv" style="flex:1;background:var(--panel)"><b style="overflow:hidden;text-overflow:ellipsis">${bolagShort()?esc(bolagShort())+" · ":""}${esc(per)} · ${F.view==="ack"?"Ack":"Månad"}${DSRC.kind==="test"?" · testdata":""}</b><small>${esc(vname(F.bud))} · ${esc(ccLabel())}</small></div></div>
   <div class="tb ${FOPEN?"open":""}">
     <div class="tbh hide"><b style="font-size:17px">Filter och period</b><button class="btn sm pri" data-a="fclose">Klar</button></div>
+    ${bolagSeg(seg, sv)}
     ${seg("calendar",[sv(per,"Period",pers), sv(String(F.year),"År",yrs)])}
     ${seg("clock",[sv(F.view==="ack"?"Ackumulerat":"Månad",F.view==="ack"?"Year to date":MONTHS_LONG[F.period-1],view)])}
     ${seg("scenario",[sv(vname(F.bud),"Budget",vers("budget"))])}
@@ -2333,6 +2347,7 @@ document.addEventListener("change", e => {
   if (t.dataset.f){ F[t.dataset.f] = t.dataset.f==="year"||t.dataset.f==="period" ? +t.value : t.value;
     if (t.dataset.f==="year"){ F.bud = (allVersions().find(v=>v.type==="budget"&&v.year==F.year)||{}).id||""; F.prg = defaultPrg(F.year); F.period = Math.min(F.period, LASTP[F.year]||12); }
     saveFilter(); render(); return; }
+  if (t.dataset.cid){ F.dim = F.dim||{}; if (t.value) F.dim[8] = [t.value]; else delete F.dim[8]; saveFilter(); render(); return; }
   if (t.dataset.dim!==undefined && t.dataset.code!==undefined){
     const i = t.dataset.dim, v = t.dataset.code; F.dim = F.dim||{}; const cur = F.dim[i]||[];
     F.dim[i] = v==="" ? [] : (t.checked ? [...cur, v] : cur.filter(x=>x!==v));
